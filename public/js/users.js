@@ -58,40 +58,63 @@ $(document).on('click', '.edit-modal', function() {
     $('#usuario').val(usuario);
     $('#formModal').modal('show');
 
-    $.ajaxSetup({
-        headers: {
-            'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
-        }
+    // $.ajaxSetup({
+    //     headers: {
+    //         'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+    //     }
+    // });
+    // $.ajax({
+    //     url: "usuario/"+id,
+    //     type: 'PUT',
+    //     data: {
+    //         '_token': $('input[name=_token]').val(),
+    //         'id': id,
+    //         'nombre':$('#nombre').val(),
+    //         'usuario':$('#usuario').val()
+
+    //     },
+    //     success: function(data) {
+    //         alert("Se editó!");
+    //         location.reload(true);
+    //         // $('.item' + $('.did').text()).remove();
+    //     }
+    // });
+    $("#btn-save").click(function (e) {
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+            }
+        });
+        e.preventDefault();
+        var formData = {
+            nombre: jQuery('#nombre').val(),
+            usuario: jQuery('#usuario').val(),
+        };
+        var state = jQuery('#btn-save').val();
+        var type = "PUT";
+        var usuario_id = jQuery('#usuario_id').val();
+        var ajaxurl = "usuario/"+id;
+        $.ajax({
+            type: type,
+            url: ajaxurl,
+            data: formData,
+            dataType: 'json',
+            success: function (data) {
+                var user = '<tr id="usuario' + data.id + '"><td>' + data.id + '</td><td>' + data.nombre + '</td><td>' + data.usuario + '</td>';
+                if (state == "add") {
+                    jQuery('#usuario-list').append(user);
+                } else {
+                    jQuery("#usuario" + usuario_id).replaceWith(user);
+                }
+                jQuery('#myForm').trigger("reset");
+                jQuery('#formModal').modal('hide');
+                location.reload(true);
+            },
+            error: function (data) {
+                console.log(data);
+            }
+        });
     });
-//     e.preventDefault();
-//     var formData = {
-//         nombre: jQuery('#nombre').val(),
-//         usuario: jQuery('#usuario').val(),
-//     };
-//     var state = jQuery('#btn-save').val();
-//     var type = "POST";
-//     var usuario_id = jQuery('#usuario_id').val();
-//     var ajaxurl = 'usuario';
-//     $.ajax({
-//         type: type,
-//         url: ajaxurl,
-//         data: formData,
-//         dataType: 'json',
-//         success: function (data) {
-//             var user = '<tr id="usuario' + data.id + '"><td>' + data.id + '</td><td>' + data.nombre + '</td><td>' + data.usuario + '</td>';
-//             if (state == "add") {
-//                 jQuery('#usuario-list').append(user);
-//             } else {
-//                 jQuery("#usuario" + usuario_id).replaceWith(user);
-//             }
-//             jQuery('#myForm').trigger("reset");
-//             jQuery('#formModal').modal('hide');
-//             location.reload(true);
-//         },
-//         error: function (data) {
-//             console.log(data);
-//         }
-//     });
 });
 
 $(document).on('click', '.delete-modal', function() {

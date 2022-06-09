@@ -43,8 +43,21 @@ class CrudController extends Controller
     public function update(Request $request, Usuario $usuario)
     {
         //
-
-        return 'gut';
+        // $data = $request->validate([
+            // 'nombre' => 'required|max:255',
+            // 'usuario' => 'required'
+        // ]);
+        
+        request()->validate([
+            'nombre' => 'required|max:255',
+            'usuario' => 'required'
+        ]);
+        $success = $usuario->update([
+            'nombre' => request('nombre'),
+            'usuario' => request('usuario'),
+        ]);
+    
+        return ['success' => $success];
         // $success = $usuario->update($request->all());
 
         // return response()->json([
