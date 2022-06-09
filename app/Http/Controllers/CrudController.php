@@ -53,4 +53,14 @@ class CrudController extends Controller
         //     'character' => $character
         // ], 200);
     }
+
+    public function destroy($id)
+    {
+
+        Usuario::find($id)->delete($id);
+
+        return response()->json([
+            'success' => 'Record deleted successfully!'
+        ]);
+    }
 }

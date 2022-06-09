@@ -45,6 +45,9 @@ jQuery(document).ready(function () {
     });
 
 });
+
+
+
 // edit
 $(document).on('click', '.edit-modal', function() {
     $('#formModalLabel').text(" Editar Usuario");
@@ -95,17 +98,22 @@ $(document).on('click', '.delete-modal', function() {
 // $('.delete-modal').on('click', '.delete', function() {
     var id = $(this).data('id');
     alert("Se va a borrar!: "+id);
-    // $.ajax({
-    //     type: 'post',
-    //     url: '/deleteItem',
-    //     data: {
-    //         // '_token': $('input[name=_token]').val(),
-    //         'id': $('.did').text()
-    //     },
-    //     success: function(data) {
-    //         alert("I am an alert box!");
-    //         // $('.item' + $('.did').text()).remove();
-
-    //     }
-    // });
+    $.ajaxSetup({
+        headers: {
+            'X-CSRF-TOKEN': jQuery('meta[name="csrf-token"]').attr('content')
+        }
+    });
+    $.ajax({
+        url: "usuario/"+id,
+        type: 'DELETE',
+        data: {
+            '_token': $('input[name=_token]').val(),
+            'id': id
+        },
+        success: function(data) {
+            alert("Se borro!");
+            location.reload(true);
+            // $('.item' + $('.did').text()).remove();
+        }
+    });
 });

@@ -31,4 +31,7 @@ use App\Http\Controllers\CrudController;
 */
 Route::get('/', [CrudController::class, 'index']);
 Route::put('/{usuario}', [CrudController::class, 'update']);
+// Route::put('/delete', [CrudController::class, 'delete']);
+Route::delete('usuario/{id}', [CrudController::class, 'destroy']);
+// Route::delete('usuario/{id}', 'CrudController@destroy')->name('users.destroy');
 Route::resource('usuario', CrudController::class);
